@@ -87,13 +87,28 @@ namespace ConsoleApp1.clients
                             newSum > 0
                             )
                         {
-                            Accounting newaccounting = new Accounting(
-                                accounting[accounting.Count-1].id + 1,
+                            Accounting newaccounting;
+                            if (!newGain) newSum *= -1;
+                            if (accounting.Count != 0)
+                            {
+                                newaccounting = new Accounting(
+                                accounting[accounting.Count - 1].id + 1,
                                 nameOperation,
                                 newSum,
                                 newOperationDate,
                                 newGain
-                            );
+                                );
+                            }
+                            else
+                            {
+                                newaccounting = new Accounting(
+                                1,
+                                nameOperation,
+                                newSum,
+                                newOperationDate,
+                                newGain
+                                );
+                            }
                             accounting.Add(newaccounting);
                             Serialize(accounting, accountingPath);
                             string text = "Изменения успешно сохранены";

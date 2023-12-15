@@ -10,7 +10,7 @@ namespace ConsoleApp1.clients
     {
         public List<User> users;
         private readonly string userName;
-        private const string usersPath = "userList.json";
+        private const string usersPath = "usersList.json";
 
         public Admin(List<User> users, string userName)
         {
@@ -132,6 +132,7 @@ namespace ConsoleApp1.clients
                 users2.Add(user);
                 
                 Clear();
+                ReadLine();
                 PrintHat(userName, "Администартор");
 
                 string[] attributes = {"ID", "Логин", "Пароль", "Должность"};
@@ -380,7 +381,18 @@ namespace ConsoleApp1.clients
                             CursorVisible = false;
                             break;
                         case (int)Actions.Save:
-                            if (usersHistory[userIndex].login != string.Empty && usersHistory[userIndex].password != string.Empty && usersHistory[userIndex].post > 0 && usersHistory[userIndex].post <= 5)
+                            if (users.Exists(user => user.login == usersHistory[userIndex].login))
+                            {
+                                SetCursorPosition(0, 6);
+                                ForegroundColor = ConsoleColor.Red;
+                                WriteLine("Такой логин уже существует!");
+                            }
+                            else if (
+                                usersHistory[userIndex].login != string.Empty &&
+                                usersHistory[userIndex].password != string.Empty &&
+                                usersHistory[userIndex].post > 0 &&
+                                usersHistory[userIndex].post <= 5
+                                )
                             {
                                 users = usersHistory;
                                 Serialize(users, usersPath);

@@ -655,6 +655,12 @@ namespace ConsoleApp1.clients
                             CursorVisible = false;
                             break;
                         case (int)Actions.Save:
+                            if (employees.Exists(employee => employee.id == employeesHistory[userIndex].id))
+                            {
+                                SetCursorPosition(0, 11);
+                                ForegroundColor = ConsoleColor.Red;
+                                WriteLine("Такой айди уже существует!");
+                            }
                             if (employeesHistory[userIndex].id != 0 &&
                                 !string.IsNullOrEmpty(employeesHistory[userIndex].name) &&
                                 !string.IsNullOrEmpty(employeesHistory[userIndex].surname) &&

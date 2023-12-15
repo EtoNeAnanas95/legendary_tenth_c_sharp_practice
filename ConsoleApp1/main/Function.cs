@@ -271,18 +271,6 @@ namespace ConsoleApp1
             }
         }
 
-        public static User chekAuthorization(List<User> users, string login, string password)
-        {
-            foreach (User user in users)
-            {
-                if (user.login == login && user.password == password)
-                {
-                    return user;
-                }
-            }
-            return null;
-        }
-
         public static void AdminWorking(List<User> users, string userName)
         {
             try
@@ -292,7 +280,7 @@ namespace ConsoleApp1
                 while (true)
                 {
                     admin.Display(admin.users);
-                    choose = ArrowMenu.Menu(3, users.Count);
+                    choose = ArrowMenu.Menu(3, admin.users.Count);
                     switch (choose)
                     {
                         case (int)Actions.NewElement:
@@ -345,7 +333,7 @@ namespace ConsoleApp1
                 while (true)
                 {
                     hr.Display(hr.employees);
-                    choose = ArrowMenu.Menu(3, employees.Count);
+                    choose = ArrowMenu.Menu(3, hr.employees.Count);
                     switch (choose)
                     {
                         case (int)Actions.NewElement:
@@ -370,7 +358,7 @@ namespace ConsoleApp1
                 while (true)
                 {
                     hr.Display(_employees);
-                    choose = ArrowMenu.Menu(3, _employees.Count);
+                    choose = ArrowMenu.Menu(3, hr.employees.Count);
                     switch (choose)
                     {
                         case (int)Actions.NewElement:
@@ -399,7 +387,7 @@ namespace ConsoleApp1
                 while (true)
                 {
                     stockManager.Display(stockManager.itemsInStock);
-                    choose = ArrowMenu.Menu(3, stock.Count);
+                    choose = ArrowMenu.Menu(3, stockManager.itemsInStock.Count);
                     switch (choose)
                     {
                         case (int)Actions.NewElement:
@@ -424,7 +412,7 @@ namespace ConsoleApp1
                 while (true)
                 {
                     stockManager.Display(stock);
-                    choose = ArrowMenu.Menu(3, 0);
+                    choose = ArrowMenu.Menu(3, stockManager.itemsInStock.Count);
                     switch (choose)
                     {
                         case (int)Actions.NewElement:
@@ -453,7 +441,7 @@ namespace ConsoleApp1
                 while (true)
                 {
                     accountant.Display(accountant.accounting);
-                    choose = ArrowMenu.Menu(3, accounting.Count);
+                    choose = ArrowMenu.Menu(3, accountant.accounting.Count);
                     switch (choose)
                     {
                         case (int)Actions.NewElement:
@@ -478,7 +466,7 @@ namespace ConsoleApp1
                 while (true)
                 {
                     accountant.Display(accounting);
-                    choose = ArrowMenu.Menu(3, 0);
+                    choose = ArrowMenu.Menu(3, accountant.accounting.Count);
                     switch (choose)
                     {
                         case (int)Actions.NewElement:
@@ -499,25 +487,29 @@ namespace ConsoleApp1
 
         public static void CashierWorking(string userName)
         {
-            var accounting = Deserialize<List<Accounting>>("accountingList.json");
-            var itemsInStock = Deserialize<List<Stock>>("stockList.json");
-            Cashier cashier = new Cashier(userName, accounting, itemsInStock);
-
             while (true)
             {
-                cashier.Display(cashier.purchases);
-                int choose = ArrowMenu.Menu(3, itemsInStock.Count);
-
-                switch (choose)
+                var accounting = Deserialize<List<Accounting>>("accountingList.json");
+                var itemsInStock = Deserialize<List<Stock>>("stockList.json");
+                Cashier cashier = new Cashier(userName, accounting, itemsInStock);
+                bool save = false;
+                while (!save)
                 {
-                    case (int)Actions.Save:
-                        cashier.SaveChanges();
-                        break;
-                    case (int)Actions.BackToMenu:
-                        return;
-                    default:
-                        cashier.ShowDescription(choose);
-                        break;
+                    cashier.Display(cashier.purchases);
+                    int choose = ArrowMenu.Menu(3, itemsInStock.Count);
+
+                    switch (choose)
+                    {
+                        case (int)Actions.Save:
+                            cashier.SaveChanges();
+                            save = true;
+                            break;
+                        case (int)Actions.BackToMenu:
+                            return;
+                        default:
+                            cashier.ShowDescription(choose);
+                            break;
+                    }
                 }
             }
 

@@ -73,12 +73,25 @@ namespace ConsoleApp1.clients
                             newQuantityProductd >= 0 &&
                             newPriceOne != 0)
                         {
-                            Stock newitemsInStock = new Stock(
-                                itemsInStock[itemsInStock.Count-1].id + 1,
+                            Stock newitemsInStock;
+                            if (itemsInStock.Count != 0)
+                            {
+                                newitemsInStock = new Stock(
+                                itemsInStock[itemsInStock.Count - 1].id + 1,
                                 newProductName,
                                 newQuantityProductd,
                                 newPriceOne
-                            );
+                                );
+                            }
+                            else
+                            {
+                                newitemsInStock = new Stock(
+                                1,
+                                newProductName,
+                                newQuantityProductd,
+                                newPriceOne
+                                );
+                            }
                             itemsInStock.Add(newitemsInStock);
                             Serialize(itemsInStock, itemsInStockPath);
                             string text = "Изменения успешно сохранены";
@@ -86,6 +99,7 @@ namespace ConsoleApp1.clients
                             ForegroundColor = ConsoleColor.Green;
                             WriteLine(text);
                             Thread.Sleep(1000);
+                            return;
                         }
                         else
                         {
@@ -413,6 +427,7 @@ namespace ConsoleApp1.clients
                                 SetCursorPosition(WindowWidth / 2 - text.Length / 2, 7);
                                 ForegroundColor = ConsoleColor.Green;
                                 WriteLine(text);
+                                itemsInStock = itemsInStockHistory;
                                 Serialize(itemsInStock, itemsInStockPath);
                                 Thread.Sleep(1000);
                                 return;

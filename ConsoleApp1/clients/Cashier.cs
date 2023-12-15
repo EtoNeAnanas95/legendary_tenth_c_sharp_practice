@@ -121,7 +121,7 @@ namespace ConsoleApp1.clients
                             WriteLine(purchasesHistory[userIndex].quantity.ToString());
                             break;
                         case ConsoleKey.OemMinus:
-                            if (purchasesHistory[userIndex].quantity >= itemsInStock[userIndex].quantityProduct) purchasesHistory[userIndex].quantity -= 1;
+                            if (purchasesHistory[userIndex].quantity > itemsInStock[userIndex].quantityProduct) purchasesHistory[userIndex].quantity -= 1;
                             SetCursorPosition(10, 4);
                             PaintOverTheArea(purchasesHistory[userIndex].quantity.ToString());
                             SetCursorPosition(10, 4);
@@ -152,6 +152,12 @@ namespace ConsoleApp1.clients
             Accounting newOperation = new Accounting(accounting[accounting.Count - 1].id + 1, "Покупка", totalSum, toDay, true);
             accounting.Add(newOperation);
             Serialize(accounting, accountingPath);
+
+            string text = "ПОКУПКА СОВЕРШЕНА УСПЕШНО!";
+            SetCursorPosition(WindowWidth / 2 - text.Length / 2, 7);
+            ForegroundColor = ConsoleColor.Green;
+            WriteLine(text);
+            Thread.Sleep(1500);
         }
     }
 }
